@@ -1,6 +1,5 @@
 #include "Adj.h"
-
-void insere(graph G);
+#include "busca.h"
 
 int main(){
     char *str = "entradas.txt";
@@ -13,8 +12,8 @@ int main(){
     PrintMatrix(G);
     PrintGraph(G);
 
+    BFS(G,v2);
+
+
 }
 
-void insere(graph G){
-    GraphInsert(G,0,1);
-}

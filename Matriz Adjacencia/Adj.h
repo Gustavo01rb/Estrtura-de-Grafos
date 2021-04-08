@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <malloc.h>
 
 /*Estruturas*/
     typedef struct Graph *graph;
