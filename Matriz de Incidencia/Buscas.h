@@ -29,14 +29,17 @@ void BFS(graph G, vertex v){
 
     while(f->size > 0){
         Item *aux = Dequeue(f);
+        int aux2;
         for(int i = 0; i < G->E; i++){
             if(G->inc[aux->data][i]->value == -1)
-                if(cor[i] == 0){
-                    cor[i] = 1;
-                    d[i] = d[aux->data]+1;
-                    pi[i] = aux->data;
-                    Queue(f,i);
-                }
+                for(int aux2 = 0; aux2 < G->V; aux2++)
+                    if(G->inc[aux2][i]->value == 1)
+                        if(cor[aux2] == 0){
+                            cor[aux2] = 1;
+                            d[aux2] = d[aux->data]+1;
+                            pi[aux2] = aux->data;
+                            Queue(f,aux2);
+                        }
         }
         cor[aux->data] = -1;
         printf("\n\t\tVertice:%d", aux->data);

@@ -3,7 +3,7 @@
 
 
 int main(){
-    char *str = "entradas.txt";
+    char *str = "input.txt";
     graph G;
 
     G = InitializeGraph(str);

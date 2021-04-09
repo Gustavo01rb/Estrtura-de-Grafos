@@ -153,7 +153,7 @@
             if(i == 0){
                 printf("\t\t    ");
                 for(int j = 0; j < G->E; j++)
-                    printf("  %d  ",j);
+                    printf(" %.2d  ",j);
                 printf("\n");
             }
             printf("\t\t");
