@@ -41,10 +41,47 @@
         </tr>
         <tr>
             <td>   
+                As linhas são compostas por colunas e cada coluna indica o vértice adjacente.
             </td>
+            <td>  <img width="500" src="Imagens/Adj-linhas.png" />  </td>
+        </tr>
+        <tr>
+            <td>
+                Todas as linhas são encerradas com o valor -1, esse valor não é computado e serve apenas como referência.
+            </td>
+            <td>  <img width="500" src="Imagens/Adj-1.png" />  </td>
         </tr>
     </tbody>
 </table>
+
+<ul>
+<li>
+<p>Conteúdo armazenado em <i>input.txt:</i></p>
+
+~~~C
+8
+1 2 -1
+0 3 -1
+0 4 5 -1
+1 -1
+2 5 6 -1
+2 4 6 7 -1
+4 5 7 -1
+5 6
+~~~
+
+</li>
+<li>
+<p>Representação visual de <i>input.txt</i>:</p>
+<p align="center">
+    <img src="Imagens/ADJ-grafo.png"
+</p>
+</li>
+</ul>
+
+<h4>Codificação</h4>
+
+<p>Os códigos referentes a matriz de adjacência se encontram em: <i>Matriz Adjacencia/Adj.h</i></p>
 
 <p>A representação dessa estrutura na linguagem C se deu da seguinte forma: </p>
 
@@ -59,7 +96,116 @@ struct Graph{
 };
 ~~~
 
+<p>A função <i>InitializeGraph(char *adrees)</i>, sofreu algumas pequenas modificações comparadas com a Lista de adjacência. Na estrutura em si, a principal diferença foi no caminhamento entre os vértices adjacentes, o código agora 'caminha' na matriz de adjcência buscando os índices do vértices adjacentes. Além disso a leitura e inserção do arquivo input ocorre nessa etapa.</p>
 
+~~~C
+vertex InitializeVertex(int value){
+    vertex aux = malloc(sizeof(vertex));
+    aux->value = value;
+    return aux;
+}
+
+graph InitializeGraph(char *adrees){
+    FILE  *arq;
+    int V;                                                  //Número de Vértices
+    int origem = 0, destino;                                //Variáveis auxiliares para leitura de arq
+    arq = fopen(adrees,"r");
+
+    /*Verificando se foi possível abrir o arquivo*/
+    if (arq == NULL){ printf("Erro: Nao foi possivel abrir o arquivo"); return NULL;}
+    
+    fscanf(arq,"%d",&V);                                    //Lendo o número de vértices
+
+    graph G = malloc(sizeof(graph));
+    G->V = V;                                            
+    G->E = 0;
+    G->adj = (vertex **)calloc(V,sizeof(vertex));
+    for(int i = 0; i < V; i++)
+        G->adj[i] = (vertex *)calloc(V,sizeof(vertex));
+
+    for(int i = 0; i < V; i++)
+        for(int j = 0; j < V; j++)
+            G->adj[i][j] = InitializeVertex(0);             //Atribuindo valores default a matriz
+
+    while (!feof(arq)){                                     //Leitura dos demais dados do arquivo
+        if(origem >= V) break;
+
+        fscanf(arq,"%d",&destino);
+        if(destino != -1)
+            GraphInsert(G,origem,destino);
+        else
+            origem++;
+        
+    }
+    fclose(arq);
+        
+    return G;
+}
+~~~
+
+<p>A função: <i>GraphInsert(graph G, int v1, int v2)</i> insere as arestas ou conexões entre os vértices do grafo. Essa função recebe como parâmetro 2 índices de vértices, v1 indicando a origem e v2 o destino. Se os valores de v1 e v2 forem válidos a matriz ADJ[v1][v2] recebe 1.</p>
+
+~~~C
+void GraphInsert(graph G, int v1, int v2){
+    vertex origem = InitializeVertex(v1);
+    vertex destino = InitializeVertex(v2);
+
+    if( (origem->value >= G->V) || (destino->value >= G->V) ){ printf("\n\nErro, valores incompativeis.\n\n"); return; }
+    
+    if(G->adj[origem->value][destino->value]->value == 0){
+        G->adj[origem->value][destino->value]->value = 1;
+        G->E++;
+    }
+
+    free(origem);
+    free(destino);
+}
+~~~
+
+<p>Por fim, as funções: <i>PrintMatrix(graph G) e PrintGraph(graph G)</i> fornecem representação dos resultados obtidos:</p>
+
+~~~C
+void PrintMatrix(graph G){
+    printf("\n\n==================================================================================================");
+    printf("\n\n\tMatriz de Adjacencia:\n\n");
+    for(int i = 0; i < G->V; i++){
+        if(i == 0){
+            printf("\t\t    ");
+            for(int j = 0; j < G->V; j++)
+                printf(" %d  ",j);
+            printf("\n");
+        }
+        printf("\t\t");
+        for(int j = 0; j < G->V; j++){
+            if(j==0){
+                printf("%d-> ",i);
+            }
+            printf("[%d] ", G->adj[i][j]->value);
+        }
+        printf("\n");
+    }
+}
+void PrintGraph(graph G){
+    printf("\n\n\tVertices e Arestas:\n");
+    for(int i = 0; i < G->V; i++){
+            printf("\n\t\t%d-> ",i);
+        for(int j = 0; j < G->V; j++)
+            if(G->adj[i][j]->value == 1)
+                printf("%d ",j);
+    }
+    printf("\n\n\tInformacoes do Grafo:");
+    printf("\n\n\t\tNumero de vertices: %d", G->V);
+    printf("  Numero de arestas: %d",G->E);
+    printf("\n==================================================================================================\n");
+
+}
+~~~
+
+<h4>Execução</h4>
+<p>Ao compilar e executar o código de Matriz Adjacencia epesra-se com a leitura de "input.txt" obtem-se o seguinte resultado:</p>
+<p align="center">
+    <img src="Imagens/ADJ-resultados.png" />
+</p>
 
 
 
