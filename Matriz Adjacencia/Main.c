@@ -2,7 +2,7 @@
 #include "busca.h"
 
 int main(){
-    char *str = "entradas.txt";
+    char *str = "input.txt";
     graph G;
     vertex v1,v2;
     v1 = InitializeVertex(1);
