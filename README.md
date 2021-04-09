@@ -16,8 +16,48 @@
 </p>
 <p>A imagem acima representa um grafo G(6,7). 6 Vértices e 7 arestas</p>
 
+<br/>
 
+<h2>Estruturas de Grafos</h2>
+<p>Em computação os grafos podem ser representados de diversas formas, nesse tópico será abordado somente as estruturas implementadas: Matriz de Adjacência e Matriz de Incidência</p>
+<h3>Matriz de Adjacência</h3>
+<p>Esse tipo de representação consiste em uma matriz N x N ( ADJ[N][N] ), na qual N é o número de vértices do grafo. As posições (i,j) da matriz representam se há ou não ligação entre os vétices indicados. Suponha que exista um grafo G, tal que G contenha pelo menos dois ou mais vértices, um vértice X(origem) e um vértice Y(destino), caso o valor contido na matirz ADJ na posição: ADJ[X][Y] for igual a 1, significa há uma aresta que parte de X e incide em Y.</p>
 
+<h4>Inputs</h4>
+<p>A pasta: <i>Matriz de Adjacencia</i> contém um arquivo nomeado de <i>"input.txt"</i>, que fornece os dados para formação de um grafo. As entradas são organizadas da seguinte forma:</p>
+<table align="center">
+    <thead>
+        <th>Instrução</th>
+        <th>Representação</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>A primeira linha indica o número de vértices do grafo</td>
+            <td>  <img width="500" src="Imagens/Adj-Vertice.png" />  </td>
+        </tr>
+        <tr>
+            <td>As demais linhas indicam os vértices e seus vértices adjacentes, começando pelo vértice 0. A segunda linha representa o vértice 0, a terceira o vértice 1....</td>
+            <td>  <img width="500" src="Imagens/Adj-Linhas.png" />  </td>
+        </tr>
+        <tr>
+            <td>   
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>A representação dessa estrutura na linguagem C se deu da seguinte forma: </p>
+
+~~~C
+struct  Vertex{             //Estrutura que representa um Vértice
+    int value;
+};
+struct Graph{
+    int V;                  //Número de Vértices
+    int E;                  //Número de Arestas
+    vertex **adj;           //Matriz de Adjacência
+};
+~~~
 
 
 
