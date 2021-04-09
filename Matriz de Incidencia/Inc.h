@@ -5,9 +5,23 @@
 #include <stdlib.h>
 
 /*Estruturas*/
+    typedef struct TipoItem Item;
+    typedef struct TipoFila Fila;
     typedef struct Graph *graph;
     typedef struct Vertex *vertex;
 
+    //Fila
+    struct TipoItem{
+        int data;
+        Item *prox;
+    };
+    struct TipoFila{
+        Item *head;
+        Item *tail;
+        int size;
+    };
+
+    //Grafos
     struct  Vertex{
         int value;
     };
@@ -19,6 +33,12 @@
 /*Fim Estruturas*/
 
 /*Métodos*/
+
+    //Estrutura de Fila
+        Fila* FFVazia();
+        void Queue(Fila *f, int vertex);
+        Item* Dequeue(Fila *f);
+
     vertex InitializeVertex(int value);
     graph InitializeGraph(char *adress);
     void GraphInsert(graph G, int aresta, int v1, int v2); 
@@ -28,6 +48,44 @@
 /*Fim métodos*/
 
 /*Implementações*/
+
+    /*Estruturas de fila*/
+        Fila* FFVazia(){
+            Fila *f = (Fila*) malloc(sizeof(Fila));
+            f->head = NULL;
+            f->tail = NULL;
+            return f;
+        }
+
+        void Queue(Fila *f, int vertex){
+            Item *d = (Item *) malloc (sizeof(Item));
+            d->data = vertex;
+            d->prox = NULL;
+
+            if(f->head == NULL){
+                f->head = d;
+                f->tail = d;
+            }else{
+                f->tail->prox = d;
+                f->tail = d;
+            }
+
+            f->size ++;
+        }
+
+        Item* Dequeue(Fila *f){
+            Item *aux;
+
+            if(f->head == NULL)
+                return NULL;
+
+            aux = f->head;
+            f->head = f->head->prox;
+            f->size --;
+
+            return aux;
+        }
+    /*Fim Estrutura de Fila */
     
     vertex InitializeVertex(int value){
         vertex aux = malloc(sizeof(vertex));
@@ -64,7 +122,6 @@
             if(numAresta >= E) break;
 
             fscanf(arq,"%d" "%d",&inci1, &inci2);
-            printf("Valores lidos e q serao enviados %d %d\n",inci1,inci2);
             GraphInsert(G,numAresta,inci1,inci2);
             numAresta++;
             
@@ -80,7 +137,7 @@
         if( (inci1->value >= G->V) || (inci2->value >= G->V) || (aresta >= G->E) ){ printf("\n\nErro, valores incompativeis.\n\n"); return; }
         
         if(G->inc[inci1->value][aresta]->value == 0){
-            G->inc[inci1->value][aresta]->value = 1;
+            G->inc[inci1->value][aresta]->value = -1;
             G->inc[inci2->value][aresta]->value = 1;
         }
 
@@ -91,40 +148,38 @@
 
     void PrintMatrix(graph G){
         printf("\n\n==================================================================================================");
-        printf("\n\n\t\tMatriz de Incidencia\n\n");
+        printf("\n\n\tMatriz de Incidencia:\n\n");
         for(int i = 0; i < G->V; i++){
             if(i == 0){
-                printf("\t    ");
+                printf("\t\t    ");
                 for(int j = 0; j < G->E; j++)
-                    printf(" %d  ",j);
+                    printf("  %d  ",j);
                 printf("\n");
             }
-            printf("\t");
+            printf("\t\t");
             for(int j = 0; j < G->E; j++){
                 if(j==0){
                     printf("%d-> ",i);
                 }
-                printf("[%d] ", G->inc[i][j]->value);
+                if(G->inc[i][j]->value >= 0) printf("[%.2d] ", G->inc[i][j]->value);
+                else printf("[%d] ", G->inc[i][j]->value);
+                 
             }
             printf("\n");
         }
-        printf("\n==================================================================================================\n");
-        
- 
     }
     void PrintGraph(graph G){
-        printf("\n\n==================================================================================================");
-        printf("\n\n\t\t\tVertices e Arestas\n\n");
-        printf("\tInformacoes do Grafo:");
-        printf("  Numero de vertices: %d", G->V);
-        printf("  Numero de arestas: %d",G->E);
-        printf("\n\n\tVertice->arestas:\n");
+        printf("\n\n\tVertices e Arestas:\n");
+        
         for(int i = 0; i < G->V; i++){
-                printf("\n\t%d-> ",i);
+                printf("\n\t\t%d-> ",i);
             for(int j = 0; j < G->E; j++)
-                if(G->inc[i][j]->value == 1)
+                if(G->inc[i][j]->value == -1)
                     printf("%d ",j);
         }
+        printf("\n\n\tInformacoes do Grafo:");
+        printf("\n\n\t\tNumero de vertices: %d", G->V);
+        printf("  Numero de arestas: %d",G->E);
         printf("\n==================================================================================================\n");
 
     }

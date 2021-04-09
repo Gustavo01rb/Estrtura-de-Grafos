@@ -1,7 +1,7 @@
 #ifndef __BUSCA__
 #define __BUSCA__
 
-#include "Adj.h"
+#include "Inc.h"
 
 void BFS(graph G, vertex v);
 void DFS(graph G);
@@ -29,8 +29,8 @@ void BFS(graph G, vertex v){
 
     while(f->size > 0){
         Item *aux = Dequeue(f);
-        for(int i = 0; i < G->V; i++){
-            if(G->adj[aux->data][i]->value == 1)
+        for(int i = 0; i < G->E; i++){
+            if(G->inc[aux->data][i]->value == -1)
                 if(cor[i] == 0){
                     cor[i] = 1;
                     d[i] = d[aux->data]+1;
@@ -65,16 +65,19 @@ void DFS_VISIT(graph G, int indice, int *cor, int *d, int *f, int *tempo){
     *tempo          +=1;
     d[indice]       = *tempo;
 
-    for(int aux = 0; aux < G->V; aux++)
-        if(G->adj[indice][aux]->value == 1)
-            if(cor[aux] == 0)
-                DFS_VISIT(G, aux, cor, d, f, tempo);
+    for(int aux = 0; aux < G->E; aux++)
+        if(G->inc[indice][aux]->value == -1)
+            for(int aux2 = 0; aux2 < G->V; aux2++)
+                if(G->inc[aux2][aux]->value == 1)
+                    if(cor[aux2] == 0)
+                        DFS_VISIT(G, aux2, cor, d, f, tempo);
     
     cor[indice]     = -1;
     *tempo          += 1;
     f[indice]       = *tempo;
 
     printf("\n\t\tVertice:%d D:%d, F:%d ", indice, d[indice], f[indice]);
+ 
 }
 
 

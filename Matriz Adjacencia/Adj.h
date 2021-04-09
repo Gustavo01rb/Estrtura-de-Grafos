@@ -34,12 +34,13 @@
     };
 /*Fim Estruturas*/
 
+
 /*Métodos*/
 
-//Estrutura de Fila
-    Fila* FFVazia();
-    void Queue(Fila *f, int vertex);
-    Item* Dequeue(Fila *f);
+    //Estrutura de Fila
+        Fila* FFVazia();
+        void Queue(Fila *f, int vertex);
+        Item* Dequeue(Fila *f);
 
     vertex InitializeVertex(int value);
     graph InitializeGraph(char *adress);
@@ -48,6 +49,7 @@
     void PrintMatrix(graph G);
     void PrintGraph(graph G);
 /*Fim métodos*/
+
 
 /*Implementações*/
 
@@ -149,15 +151,15 @@
 
     void PrintMatrix(graph G){
         printf("\n\n==================================================================================================");
-        printf("\n\n\t\tMatriz de Adjacencia\n\n");
+        printf("\n\n\tMatriz de Adjacencia:\n\n");
         for(int i = 0; i < G->V; i++){
             if(i == 0){
-                printf("\t    ");
+                printf("\t\t    ");
                 for(int j = 0; j < G->V; j++)
                     printf(" %d  ",j);
                 printf("\n");
             }
-            printf("\t");
+            printf("\t\t");
             for(int j = 0; j < G->V; j++){
                 if(j==0){
                     printf("%d-> ",i);
@@ -166,22 +168,18 @@
             }
             printf("\n");
         }
-        printf("\n==================================================================================================\n");
-
     }
     void PrintGraph(graph G){
-        printf("\n\n==================================================================================================");
-        printf("\n\n\t\t\tVertices e Arestas\n\n");
-        printf("\tInformacoes do Grafo:");
-        printf("  Numero de vertices: %d", G->V);
-        printf("  Numero de arestas: %d",G->E);
-        printf("\n\n\tVertice->arestas:\n");
+        printf("\n\n\tVertices e Arestas:\n");
         for(int i = 0; i < G->V; i++){
-                printf("\n\t%d-> ",i);
+                printf("\n\t\t%d-> ",i);
             for(int j = 0; j < G->V; j++)
                 if(G->adj[i][j]->value == 1)
                     printf("%d ",j);
         }
+        printf("\n\n\tInformacoes do Grafo:");
+        printf("\n\n\t\tNumero de vertices: %d", G->V);
+        printf("  Numero de arestas: %d",G->E);
         printf("\n==================================================================================================\n");
 
     }
