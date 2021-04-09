@@ -3,78 +3,18 @@
 
 #include "Adj.h"
 
-/*Estrutura Base de Filas*/
-    typedef struct TipoItem Item;
-    typedef struct TipoFila Fila;
+void BFS(graph G, vertex v);
+void DFS(graph G);
+void DFS_VISIT(graph G, int indice, int *cor, int *d, int *f, int *tempo);
 
-    struct TipoItem{
-        int data;
-        Item *prox;
-    };
-    struct TipoFila{
-        Item *head;
-        Item *tail;
-        int size;
-    };
-/*Fim Estrutura Base de Filas*/
-
-/*Funções*/
-    //Estrutura de Fila
-    Fila* FFVazia();
-    void Queue(Fila *f, int vertex);
-    Item* Dequeue(Fila *f);
-
-    //BFS
-    void BFS(graph G, vertex v);
-
-/* Fim Funções*/
-
-
-
-/*Estruturas de fila*/
-    Fila* FFVazia(){
-        Fila *f = (Fila*) malloc(sizeof(Fila));
-        f->head = NULL;
-        f->tail = NULL;
-        return f;
-    }
-
-    void Queue(Fila *f, int vertex){
-        Item *d = (Item *) malloc (sizeof(Item));
-        d->data = vertex;
-        d->prox = NULL;
-
-        if(f->head == NULL){
-            f->head = d;
-            f->tail = d;
-        }else{
-            f->tail->prox = d;
-            f->tail = d;
-        }
-
-        f->size ++;
-    }
-
-    Item* Dequeue(Fila *f){
-        Item *aux;
-
-        if(f->head == NULL)
-            return NULL;
-
-        aux = f->head;
-        f->head = f->head->prox;
-        f->size --;
-
-        return aux;
-    }
-/*Fim Estrutura de Fila */
-
+/*=====================BFS====================================*/
 void BFS(graph G, vertex v){
     int cor[G->V];          // -1 = Preto, 0 = Branco, 1 = Cinza
     int d[G->V];
     int pi[G->V];
     Fila *f =FFVazia();
 
+    printf("\n\n\tCaminhamento BFS: ");
     for(int i = 0; i < G->V; i++)
         if(i != v->value){
             cor[i] = 0;
@@ -99,8 +39,42 @@ void BFS(graph G, vertex v){
                 }
         }
         cor[aux->data] = -1;
-        printf("Vertex:%d\n", aux->data);
+        printf("\n\t\tVertice:%d", aux->data);
     }
+}
+/*=====================BFS====================================*/
+
+/*=====================DFS====================================*/
+void DFS(graph G){
+    int cor[G->V];                                      //-1 = Preto; 0 = Branco; 1 = Cinza
+    int d[G->V];                                        //Tempo de deslocação
+    int f[G->V];                                        //Tempo de Finalização
+    int tempo = 0;
+
+    for(int i = 0; i < G->V; i++)   cor[i] = 0;         //Branco para todos os vértices
+
+    for(int i = 0; i < G->V; i++)
+        if(cor[i] == 0)
+            DFS_VISIT(G,i,cor,d,f,&tempo);
+
+
+}
+void DFS_VISIT(graph G, int indice, int *cor, int *d, int *f, int *tempo){
+    cor[indice]     = 1;
+    *tempo          +=1;
+    d[indice]       = *tempo;
+
+    for(int aux = 0; aux < G->V; aux++)
+        if(G->adj[indice][aux]->value == 1)
+            if(cor[aux] == 0)
+                DFS_VISIT(G, aux, cor, d, f, tempo);
+    
+    cor[indice]     = -1;
+    *tempo          += 1;
+    f[indice]       = *tempo;
+
+    printf("Vertex:%d D:%d, F:%d \n", indice, d[indice], f[indice]);
+ 
 }
 
 

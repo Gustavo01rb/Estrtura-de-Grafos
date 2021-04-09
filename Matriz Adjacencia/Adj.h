@@ -6,20 +6,41 @@
 #include <malloc.h>
 
 /*Estruturas*/
+
+    typedef struct TipoItem Item;
+    typedef struct TipoFila Fila;
     typedef struct Graph *graph;
     typedef struct Vertex *vertex;
 
+    //Fila
+    struct TipoItem{
+        int data;
+        Item *prox;
+    };
+    struct TipoFila{
+        Item *head;
+        Item *tail;
+        int size;
+    };
+
+    //Grafos
     struct  Vertex{
         int value;
     };
     struct Graph{
-        int V;              // Número de Vértices
-        int E;              //Número de Arestas
+        int V;                  // Número de Vértices
+        int E;                  //Número de Arestas
         vertex **adj;
     };
 /*Fim Estruturas*/
 
 /*Métodos*/
+
+//Estrutura de Fila
+    Fila* FFVazia();
+    void Queue(Fila *f, int vertex);
+    Item* Dequeue(Fila *f);
+
     vertex InitializeVertex(int value);
     graph InitializeGraph(char *adress);
     void GraphInsert(graph G, int v1, int v2); 
@@ -29,6 +50,44 @@
 /*Fim métodos*/
 
 /*Implementações*/
+
+    /*Estruturas de fila*/
+        Fila* FFVazia(){
+            Fila *f = (Fila*) malloc(sizeof(Fila));
+            f->head = NULL;
+            f->tail = NULL;
+            return f;
+        }
+
+        void Queue(Fila *f, int vertex){
+            Item *d = (Item *) malloc (sizeof(Item));
+            d->data = vertex;
+            d->prox = NULL;
+
+            if(f->head == NULL){
+                f->head = d;
+                f->tail = d;
+            }else{
+                f->tail->prox = d;
+                f->tail = d;
+            }
+
+            f->size ++;
+        }
+
+        Item* Dequeue(Fila *f){
+            Item *aux;
+
+            if(f->head == NULL)
+                return NULL;
+
+            aux = f->head;
+            f->head = f->head->prox;
+            f->size --;
+
+            return aux;
+        }
+    /*Fim Estrutura de Fila */
     
     vertex InitializeVertex(int value){
         vertex aux = malloc(sizeof(vertex));

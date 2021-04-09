@@ -13,7 +13,10 @@ int main(){
     PrintGraph(G);
 
     BFS(G,v2);
+    printf("\n\n");
+    DFS(G);
 
+    printf("\n\n");
 
 }
 
