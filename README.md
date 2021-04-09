@@ -13,7 +13,18 @@
 <a href="#inc">2.2 Matriz de Incidência</a><br/>
 <a href="#in-inc">2.2.1 Inputs</a><br/>
 <a href="#cod-inc">2.2.2 Codificação</a><br/>
-<a href="#ex-inc">2.2.3 Execução</a><br/>
+<a href="#ex-inc">2.2.3 Execução</a><br/><br/>
+<a href="#busca">3. Métodos de Busca</a><br/><br/>
+<a href="#BFS">3.1 BFS</a><br/><br/>
+<a href="#BFS-ADJ">3.1.1 Alteraçẽos de BFS para Matriz de Adjacência</a><br/><br/>
+<a href="#BFS-INC">3.1.2 Alteraçẽos de BFS para Matriz de Incidência</a><br/><br/>
+<a href="#DFS">3.2 DFS</a><br/><br/>
+<a href="#DFS-ADJ">3.2.1 Alteraçẽos de DFS para Matriz de Adjacência</a><br/><br/>
+<a href="#DFS-INC">3.2.2 Alteraçẽos de DFS para Matriz de Incidência</a><br/><br/>
+<a href="#busc-resul">3.3 Resultados obtidos</a><br/><br/>
+
+
+
 
 
 
@@ -420,10 +431,209 @@ void PrintGraph(graph G){
 </p>
 
 
+<br/>
+<h2 id="busca">3. Métodos de Busca</h2>
+<p>Um algoritmo de busca (ou de varredura) é qualquer algoritmo que visita todos os vértices de um grafo andando pelos arcos de um vértice a outro.  Há muitas maneiras de fazer uma tal busca.  Cada algoritmo de busca é caracterizado pela ordem em que visita os vértices.<sup><a href="#imi">[ 2 ]</a></sup></p>
+<h3 id="BFS">3.1 BFS <sup><a href="bf">[3]</a></sup></h3>
+<p>A implementação do algoritmo BFS coloca cada vértice do gráfo em uma de tres categorias:</p>
+<ul>
+    <li>-1 -> Visitado (preto)</li>
+    <li>0  -> Não visitado (branco)</li>
+    <li>1  -> Em análise (Cinza)</li>
+</ul>
+<p>O objetivo do algoritmo é marcar cada vértice como visitado, evitando ciclos. O algoritmo funciona da seguinte maneira: </p>
+<ol>
+    <li>Define a cor branca para todos os vértices.</li>
+    <li>Começa adicionando qualquer um dos vértices do gráfico no final de uma fila "em análise" e altera sua cor para cinza.</li>
+    <li>Pegue o item da frente da fila e adiciona-o à lista de vértices visitados.</li>
+    <li>Adiciona os vértices ajacentes ao vértice adicionado a lista de visitados na fila "em análise"</li>
+    <li>Continua repetindo as etapas 2 e 3 até que a fila esteja vazia.</li>
+    <li>Ao final da chamada recursiva altera a cor do vértice analisado para preto.</li>
+</ol>
+<h3 id="BFS-ADJ">3.1.1 Alteraçẽos de BFS para Matriz de Adjacência</h3>
+<p>As alterações realizadas no método BFS, comparando com o método de Lista de Adjacencia foram poucas. Dentro do laço While, para percorrer os vértices adjacentes agora é necessário um laço for que caminha nas colunas da matriz adj:</p>
+
+~~~C
+void BFS(graph G, vertex v){
+    int cor[G->V];          // -1 = Preto, 0 = Branco, 1 = Cinza
+    int d[G->V];
+    int pi[G->V];
+    Fila *f =FFVazia();
+
+    printf("\n\n\tMetodo de busca BFS: \n");
+    for(int i = 0; i < G->V; i++)
+        if(i != v->value){
+            cor[i] = 0;
+            d[i] = -1;      //Infinito
+            pi[i] = -1;
+        }
+    cor[v->value] = 1;
+    d[v->value] = 0;
+    pi[v->value] = -1;
+
+    Queue(f,v->value);
+
+    while(f->size > 0){
+        Item *aux = Dequeue(f);
+        for(int i = 0; i < G->V; i++){
+            if(G->adj[aux->data][i]->value == 1)
+                if(cor[i] == 0){
+                    cor[i] = 1;
+                    d[i] = d[aux->data]+1;
+                    pi[i] = aux->data;
+                    Queue(f,i);
+                }
+        }
+        cor[aux->data] = -1;
+        printf("\n\t\tVertice:%d", aux->data);
+    }
+}
+~~~
+
+<h3 id="BFS-INC">3.1.2 Alteraçẽos de BFS para Matriz de Incidência</h3>
+<p>A alteração realizada nesse método também se deu no laço while, para acessar os vértices adjacentes agora é preciso de dois laços for. Um para caminhar nas colunas da matriz INC e achar uma aresta que tenha origem no vértice analisado e outro para caminha nas linhas da matriz e encontrar o vértice de destino.</p>
+
+~~~C
+void BFS(graph G, vertex v){
+    int cor[G->V];          // -1 = Preto, 0 = Branco, 1 = Cinza
+    int d[G->V];
+    int pi[G->V];
+    Fila *f =FFVazia();
+
+    printf("\n\n\tMetodo de busca BFS: \n");
+    for(int i = 0; i < G->V; i++)
+        if(i != v->value){
+            cor[i] = 0;
+            d[i] = -1;      //Infinito
+            pi[i] = -1;
+        }
+    cor[v->value] = 1;
+    d[v->value] = 0;
+    pi[v->value] = -1;
+
+    Queue(f,v->value);
+
+    while(f->size > 0){
+        Item *aux = Dequeue(f);
+        int aux2;
+        for(int i = 0; i < G->E; i++){
+            if(G->inc[aux->data][i]->value == -1)
+                for(int aux2 = 0; aux2 < G->V; aux2++)
+                    if(G->inc[aux2][i]->value == 1)
+                        if(cor[aux2] == 0){
+                            cor[aux2] = 1;
+                            d[aux2] = d[aux->data]+1;
+                            pi[aux2] = aux->data;
+                            Queue(f,aux2);
+                        }
+        }
+        cor[aux->data] = -1;
+        printf("\n\t\tVertice:%d", aux->data);
+    }
+}
+~~~
+
+<h3 id="DFS">3.2 DFS</h3>
+<p>A implementação do algoritmo DFS coloca cada vértice do gráfo em uma de tres categorias:</p>
+<ul>
+    <li>-1 -> Visitado (preto)</li>
+    <li>0  -> Não visitado (branco)</li>
+    <li>1  -> Em análise (Cinza)</li>
+</ul>
+<P>O objetivo do algoritmo é marcar cada vértice como visitado, evitando ciclos.
+ O algoritmo DFS funciona da seguinte maneira:</P>
+<ol>
+    <li>Muda para branco a cor de todos os vértices</li>
+    <li>A partir de um vértice, muda sua cor para cinza e parte para o primeiro vértice adjacente de cor branca.</li>
+    <li>Repetir o passo o 2 até que não haja mais vértices ajcentes de cor branca</li>
+    <li>Altera a cor do vértice encontrado no passo 3 para preto, retorna ao pai desse vértice e repete os passos 2 e 3.</li>
+    <li>Repetir o passo 4 até que todos os vértices estejam pretos.</li>
+</ol>
+<h3 id="DFS-ADJ">3.2.1 Alteraçẽos de DFS para Matriz de Adjacência</h3>
+<P>Comparado com a função DFS de lista de adjacência a alteração se deu na função: DFS_VISIT(). Para percorrer os vértices adjacentes precisa agora caminhar pelaS colunas da matriz adj.</P>
+
+~~~C
+void DFS(graph G){
+    printf("\n\n\tMetodo de busca DFS: \n");
+    int cor[G->V];                                      //-1 = Preto; 0 = Branco; 1 = Cinza
+    int d[G->V];                                        //Tempo de deslocação
+    int f[G->V];                                        //Tempo de Finalização
+    int tempo = 0;
+
+    for(int i = 0; i < G->V; i++)   cor[i] = 0;         //Branco para todos os vértices
+
+    for(int i = 0; i < G->V; i++)
+        if(cor[i] == 0)
+            DFS_VISIT(G,i,cor,d,f,&tempo);
 
 
+}
+void DFS_VISIT(graph G, int indice, int *cor, int *d, int *f, int *tempo){
+    cor[indice]     = 1;
+    *tempo          +=1;
+    d[indice]       = *tempo;
+
+    for(int aux = 0; aux < G->V; aux++)
+        if(G->adj[indice][aux]->value == 1)
+            if(cor[aux] == 0)
+                DFS_VISIT(G, aux, cor, d, f, tempo);
+    
+    cor[indice]     = -1;
+    *tempo          += 1;
+    f[indice]       = *tempo;
+
+    printf("\n\t\tVertice:%d D:%d, F:%d ", indice, d[indice], f[indice]);
+}
+
+~~~
+
+<h3 id="DFS-INC">3.2.2 Alteraçẽos de DFS para Matriz de Incidência</h3>
+<P>As alterações aqui também se resumem a função: DFS_VISIT(), para percorrer os vértices adjacentes foram inclusos dois laços for. Um para caminhar nas colunas da matriz INC e achar uma aresta que tenha origem no vértice analisado e outro para caminha nas linhas da matriz e encontrar o vértice de destino. </P>
+
+~~~C
+void DFS(graph G){
+    printf("\n\n\tMetodo de busca DFS: \n");
+    int cor[G->V];                                      //-1 = Preto; 0 = Branco; 1 = Cinza
+    int d[G->V];                                        //Tempo de deslocação
+    int f[G->V];                                        //Tempo de Finalização
+    int tempo = 0;
+
+    for(int i = 0; i < G->V; i++)   cor[i] = 0;         //Branco para todos os vértices
+
+    for(int i = 0; i < G->V; i++)
+        if(cor[i] == 0)
+            DFS_VISIT(G,i,cor,d,f,&tempo);
 
 
+}
+void DFS_VISIT(graph G, int indice, int *cor, int *d, int *f, int *tempo){
+    cor[indice]     = 1;
+    *tempo          +=1;
+    d[indice]       = *tempo;
+
+    for(int aux = 0; aux < G->E; aux++)
+        if(G->inc[indice][aux]->value == -1)
+            for(int aux2 = 0; aux2 < G->V; aux2++)
+                if(G->inc[aux2][aux]->value == 1)
+                    if(cor[aux2] == 0)
+                        DFS_VISIT(G, aux2, cor, d, f, tempo);
+    
+    cor[indice]     = -1;
+    *tempo          += 1;
+    f[indice]       = *tempo;
+
+    printf("\n\t\tVertice:%d D:%d, F:%d ", indice, d[indice], f[indice]);
+ 
+}
+~~~
+
+<h3 id="busc-resul">3.3 Resultados obtidos</h3>
+<p>Como o grafo inserido nos dois casos é o mesmo os resultados obtidos também serão iguais:</p>
+<p align="center">
+    <img src="Imagens/Busca.png" />
+</p>
 
 <h2>Referências</h2>
 [1] <a id="wiki" href="https://pt.wikipedia.org/wiki/Teoria_dos_grafos#Hist%C3%B3rico">Wikipedia</a><br/>
+[2]<a id="imi" href="https://www.ime.usp.br/~pf/algoritmos_para_grafos/aulas/dfs.html#:~:text=Um%20algoritmo%20de%20busca%20(ou,em%20que%20visita%20os%20v%C3%A9rtices."> Ime.Usp</a><br/>
+[3] <a id="bf" href="https://www.programiz.com/dsa/graph-bfs">BFS</a>
