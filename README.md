@@ -2,6 +2,13 @@
 
 <p align="right">Gustavo Rodrigues Barcelos</p>
 
+<h2>Compilação</h2>
+<p>Os arquivos estão separados em 3 pastas diferentes, todas compilam com o seguinte código:</p>
+
+~~~C
+gcc Main.c -o executavel
+~~~
+
 <h2>Navegação Rápida</h2>
 <a href="#introducao">1. Introdução</a><br/>
 <a href="#resumo">1.1 Breve resumo da teoria de grafos</a><br/><br/>
@@ -15,7 +22,7 @@
 <a href="#cod-inc">2.2.2 Codificação</a><br/>
 <a href="#ex-inc">2.2.3 Execução</a><br/><br/>
 <a href="#busca">3. Métodos de Busca</a><br/>
-<a href="#BFS">3.1 BFS</a><br/><
+<a href="#BFS">3.1 BFS</a><br/>
 <a href="#BFS-ADJ">3.1.1 Alteraçẽos de BFS para Matriz de Adjacência</a><br/>
 <a href="#BFS-INC">3.1.2 Alteraçẽos de BFS para Matriz de Incidência</a><br/>
 <a href="#DFS">3.2 DFS</a><br/>
