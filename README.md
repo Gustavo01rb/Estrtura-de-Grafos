@@ -14,22 +14,21 @@
 <a href="#in-inc">2.2.1 Inputs</a><br/>
 <a href="#cod-inc">2.2.2 Codificação</a><br/>
 <a href="#ex-inc">2.2.3 Execução</a><br/><br/>
-<a href="#busca">3. Métodos de Busca</a><br/><br/>
-<a href="#BFS">3.1 BFS</a><br/><br/>
-<a href="#BFS-ADJ">3.1.1 Alteraçẽos de BFS para Matriz de Adjacência</a><br/><br/>
-<a href="#BFS-INC">3.1.2 Alteraçẽos de BFS para Matriz de Incidência</a><br/><br/>
-<a href="#DFS">3.2 DFS</a><br/><br/>
-<a href="#DFS-ADJ">3.2.1 Alteraçẽos de DFS para Matriz de Adjacência</a><br/><br/>
-<a href="#DFS-INC">3.2.2 Alteraçẽos de DFS para Matriz de Incidência</a><br/><br/>
-<a href="#busc-resul">3.3 Resultados obtidos</a><br/><br/>
-
-
-
-
-
-
-
-
+<a href="#busca">3. Métodos de Busca</a><br/>
+<a href="#BFS">3.1 BFS</a><br/><
+<a href="#BFS-ADJ">3.1.1 Alteraçẽos de BFS para Matriz de Adjacência</a><br/>
+<a href="#BFS-INC">3.1.2 Alteraçẽos de BFS para Matriz de Incidência</a><br/>
+<a href="#DFS">3.2 DFS</a><br/>
+<a href="#DFS-ADJ">3.2.1 Alteraçẽos de DFS para Matriz de Adjacência</a><br/>
+<a href="#DFS-INC">3.2.2 Alteraçẽos de DFS para Matriz de Incidência</a><br/>
+<a href="#busc-resul">3.3 Resultados obtidos</a><br/><br>
+<a href="#Compara">4. Comparações </a><br/>
+<a href="#comp-lis">4.1 Lista de Adjacência:</a><br/>
+<a href="#comp-adj">4.2 Matriz de Adjacência:</a><br/>
+<a href="#comp-inc">4.3 Matriz de Incidência: </a><br/>
+<a href="#com-visual">4.4 Representações visuais dos resultados obtidos:</a><br/><br/>
+<a href="#conclusão">5 Conclusões</a><br/>
+<br/>
 
 <h2 id="introducao">1. Introdução</h2>
 <p>A atividade da disciplina: Algoritmos e estrutura de dados II tem como objetivo implementar as estruturas de grafos aprendidas em aula, sendo elas: Listas de Adjacência, Matriz de Adjacência e Matriz de Incidência. Para realização dessa atividade foi disponilizado a implentação do código: "Lista de Adjacência", a fim de servir como base de estudo e referência para implementação dos demais.</p>
@@ -632,6 +631,156 @@ void DFS_VISIT(graph G, int indice, int *cor, int *d, int *f, int *tempo){
 <p align="center">
     <img src="Imagens/Busca.png" />
 </p>
+
+<h2 id="Compara">4. Comparações </h2>
+<p>A atividade contempla uma comparação entre os métodos de busca e as estruturas apresentadas. Para isso fora realizado testes com grafos esparsos com cerca de 100 vértices e grafos densos com cerca de 10000 vértices. As comparações serão baseadas em tempo para execução e consumo de memória RAM de cada estrutura. A codificação para gerar as entradas aleatórias de grafos para as funções se encontram no main de cada uma. Para realizar medições de tempo foi usada as funções da biblioteca: < time.h > e para medir o consumo de memória RAM utilizou-se o seguinte comando no terminal:</p>
+
+~~~C
+valgrind --leak-check=yes ./teste
+~~~
+
+<p>Os Resultados obtidos foram:</p>
+<h3 id="comp-lis">4.1 Lista de Adjacência: </h3>
+<h4 id="list-esp">Grafos esparsos:</h4>
+<ul>
+    <li>O tempo de execução foi: 3.563000 milissegundos</li>
+    <li>O espaço em memória gasto foi: 4.432 bytes
+        <p align="center">
+            <img src="Imagens/Espaco-lista.png" />
+        </p>
+    </li>
+</ul>
+<h4 id="list-den">Grafos Densos:</h4>
+<ul>
+    <li>O tempo de execução foi: 75.513000 milissegundos</li>
+    <li>O espaço em memória gasto foi: 480,024 bytes
+        <p align="center">
+            <img src="Imagens/Espaco2-lista.png" />
+        </p>
+    </li>
+</ul>
+<h3 id="comp-adj">4.2 Matriz de Adjacência: </h3>
+<h4 id="adj-esp">Grafos esparsos:</h4>
+<ul>
+    <li>O tempo de execução foi: 1.987000 milissegundos</li>
+    <li>O espaço em memória gasto foi: 196,424 bytes
+        <p align="center">
+            <img src="Imagens/Espaco-adj.png" />
+        </p>
+    </li>
+</ul>
+<h4 id="list-den">Grafos Densos:</h4>
+<ul>
+    <li>O tempo de execução foi: 1918.756000 milissegundos</li>
+    <li>O espaço em memória gasto foi: 784,069,000 bytes
+        <p align="center">
+            <img src="Imagens/Espaco2-adj.png" />
+        </p>
+    </li>
+</ul>
+<h3 id="comp-inc">4.3 Matriz de Incidência: </h3>
+<h4 id="inc-esp">Grafos esparsos:</h4>
+<ul>
+    <li>O tempo de execução foi: 5.368000 milissegundos</li>
+    <li>O espaço em memória gasto foi: 530,536 bytes
+        <p align="center">
+            <img src="Imagens/Espaco-inc.png" />
+        </p>
+    </li>
+</ul>
+<h4 id="list-den">Grafos Densos:</h4>
+<ul>
+    <li>O tempo de execução foi: 7932.338000 milissegundos</li>
+    <li>O espaço em memória gasto foi: 1,120,057,672 bytes
+        <p align="center">
+            <img src="Imagens/Espaco2-inc.png" />
+        </p>
+    </li>
+</ul>
+
+<h3 id="com-visual">4.4 Representações visuais dos resultados obtidos: </h3>
+<h4>Tempo e consumo de meória em grafos esparsos: </h4>
+<table align="center">
+   <thead>
+       <td></td>
+       <th>Lista de Adjacência</th>
+       <th>Matriz de Adjacência</th>
+       <th>Matriz de Incidência</th>
+   </thead> 
+   <tbody>
+       <tr>
+            <th>Tempo gasto</th>
+            <td>75.513000 milissegundos</td>
+            <td>1918.756000 milissegundos</td>
+            <td>7932.338000 milissegundos</td>
+        </tr>
+        <tr>
+            <th>Espaço utilizado</th>
+            <td>480,024 bytes</td>
+            <td>784,069,000 bytes</td>
+            <td>1,120,057,672 bytes</td>
+        </tr>
+
+   </tbody>
+</table>
+<br/>
+
+<ul>
+    <li>Tempo
+        <p align="centro">
+            <img src="Imagens/Grafos esparso tempo.png" />
+        </p>
+    </li>
+    <li>Memória
+    <p align="centro">
+        <img src="Imagens/Grafos Esparsos.png" />
+    </p>
+    </li>
+</ul>
+
+<h4>Tempo e consumo de meória em grafos Densos: </h4>
+<table align="center">
+   <thead>
+       <td></td>
+       <th>Lista de Adjacência</th>
+       <th>Matriz de Adjacência</th>
+       <th>Matriz de Incidência</th>
+   </thead> 
+   <tbody>
+       <tr>
+            <th>Tempo gasto</th>
+            <td>3.563000 milissegundos</td>
+            <td>1.987000 milissegundos</td>
+            <td>5.368000 milissegundos</td>
+        </tr>
+        <tr>
+            <th>Espaço utilizado</th>
+            <td>4.432 bytes</td>
+            <td>196,424 bytes</td>
+            <td>530,536 bytes</td>
+        </tr>
+
+   </tbody>
+</table>
+<br/>
+
+<ul>
+    <li>Tempo
+        <p align="centro">
+            <img src="Imagens/Grafos Densos-tempo.png" />
+        </p>
+    </li>
+    <li>Memória
+    <p align="centro">
+        <img src="Imagens/Grafos Densos-memoria.png" />
+    </p>
+    </li>
+</ul>
+
+<h2 id="conclusão">5 Conclusão</h2>
+<p>Analisando os resultados obtidos percebe-se que para grandes entradas de dados é muito viável utilizar Listas de adjacência e vasicamente inviável a utilização de matrizes de incidência. Já para pequenas entradas de dados é mais vantajoso matriz de adjacência, pelo se baixo consumo de memória, a diferênça de tempo é basicamente imperceptível.</p>
+<p>A única estrutura que não se mostrou muito vantajosa em nunhum caso foi a matriz de incidência, em todos os casos ela apresenta piores resultados</p>
+
 
 <h2>Referências</h2>
 [1] <a id="wiki" href="https://pt.wikipedia.org/wiki/Teoria_dos_grafos#Hist%C3%B3rico">Wikipedia</a><br/>

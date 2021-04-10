@@ -137,7 +137,7 @@
         vertex origem = InitializeVertex(v1);
         vertex destino = InitializeVertex(v2);
 
-        if( (origem->value >= G->V) || (destino->value >= G->V) ){ printf("\n\nErro, valores incompativeis.\n\n"); return; }
+        if( (origem->value >= G->V) || (destino->value >= G->V) ) return; 
         
         if(G->adj[origem->value][destino->value]->value == 0){
             G->adj[origem->value][destino->value]->value = 1;
