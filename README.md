@@ -9,7 +9,6 @@
 gcc Main.c -o executavel
 ~~~
 
-teste
 
 <h2>Navegação Rápida</h2>
 <a href="#introducao">1. Introdução</a><br/>
